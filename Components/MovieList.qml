@@ -1,5 +1,12 @@
 import QtQuick 2.0
 
-Item {
+Rectangle {
+    color: "lightgreen"
 
+
+    Text{
+        text: "Movie List Component"
+        anchors.centerIn: parent
+
+    }
 }
