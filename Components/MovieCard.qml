@@ -3,6 +3,12 @@ import QtQuick 2.0
 import QtQuick.Layouts
 import "Widgets"
 Rectangle {
+    id: root
+
+    property string movie_title: "BlackWidow"
+    property string movie_date: ""
+    property int movie_rating: 0
+    property string movie_id: ""
     radius: 5
     border.color: Qt.rgba(0, 0, 0, 0.1)
 
@@ -25,11 +31,12 @@ Rectangle {
                anchors.left: parent.left
                anchors.leftMargin: 3
             }
-        }   PopularityProgress{
-                x:5
+               PopularityProgress{
+                    x:5
 
-                anchors.bottom: parent.botton
-                percentage: 60
+                    anchors.bottom: parent.bottom
+                    percentage: root.movie_rating
+            }
         }
 
         Item{
@@ -40,13 +47,13 @@ Rectangle {
             ColumnLayout{
                 anchors.fill: parent
             Text{
-                text: "Black Window"
+                text: root.movie_title
                 font.pixelSize: 16
                 font.bold: true
 
             }
             Text{
-                text: "Jul 07, 2021"
+                text: root.movie_date
                 color: "#888888"
                 font.pixelSize: 16
 
@@ -60,6 +67,6 @@ Rectangle {
     MouseArea{
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-
+        onClicked: main_layout.state = "details"
     }
 }
