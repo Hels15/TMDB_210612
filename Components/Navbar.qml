@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Layouts 1.0
+import "Widgets"
 Rectangle {
     color: "#032541"
     RowLayout{
@@ -18,11 +19,10 @@ Rectangle {
         Repeater{
            model: ["Movies", "TV Shows", "People", "More"]
 
-           Text{
-              text:modelData
-              color: "white"
-              font.pixelSize: 20
-              Layout.rightMargin: 10
+           TextLink{
+               link_text: modelData
+               Layout.rightMargin: 10
+
            }
 
         //refresh button

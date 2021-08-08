@@ -1,3 +1,3 @@
 {
-    "files": ["main.py","Components/Navbar.qml","Components/SearchBar.qml","main.qml","Components/MovieList.qml"]
+    "files": ["main.py","Components/MovieCard.qml","Components/Navbar.qml","Components/SearchBar.qml","Components/MovieList.qml","Components/Widgets/TextLink.qml","main.qml","Components/Widgets/PopularityProgress.qml"]
 }

@@ -12,7 +12,7 @@ Window {
 
     ColumnLayout{
         anchors.fill: parent
-        spacing: 0
+
 
 
 
@@ -24,7 +24,7 @@ Window {
 
         // Search and Move list Layout
         RowLayout{
-            spacing: 0
+
             Layout.fillHeight: true
             Layout.fillWidth: true
             SearchBar{
