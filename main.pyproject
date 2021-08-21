@@ -1,3 +1,3 @@
 {
-    "files": ["Components/MovieCard.qml","main.qml","Components/MovieList.qml","Components/Widgets/TextLink.qml","Components/Widgets/PopularityProgress.qml","Components/Navbar.qml","main.py","Components/SearchBar.qml","Components/MovieDetails.qml"]
+    "files": ["main.py","Components/Widgets/PopularityProgress.qml","Components/SearchBar.qml","Components/MovieList.qml","Components/MovieDetails.qml","Components/MovieListGrid.qml","Components/Navbar.qml","main.qml","Components/MovieCard.qml","Components/Widgets/TextLink.qml","Components/Widgets/IconButton.qml"]
 }

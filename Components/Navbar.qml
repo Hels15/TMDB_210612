@@ -41,10 +41,21 @@ Rectangle {
         }
 
 
-        Image{
-            source: Resources.get_image("refresh.svg")
-            sourceSize: Qt.size(30,30)
+        IconButton{
+            icon: Resources.get_image("gridview.svg")
+            size: 40
+            visible: navbar.state === "listview"
 
+            onClicked: navbar.state = "gridview"
+        }
+        IconButton{
+            icon: Resources.get_image("listview.svg")
+            onClicked: navbar.state = "listview"
+            visible: navbar.state === "gridview"
+        }
+        IconButton{
+            icon: Resources.get_image("refresh.svg")
+            onClicked: print("refreshview  clicked")
 
         }
 

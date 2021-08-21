@@ -9,6 +9,7 @@ Rectangle {
     property string movie_date: ""
     property int movie_rating: 0
     property string movie_id: ""
+    property string movie_poster: ""
     radius: 5
     border.color: Qt.rgba(0, 0, 0, 0.1)
 
@@ -23,7 +24,7 @@ Rectangle {
             Layout.fillHeight: true
 
             Image{
-               source: Resources.get_image("poster.jpg")
+               source: root.movie_poster
                sourceSize: Qt.size(poster_rect.width - 5,poster_rect.height - 5)
                anchors.horizontalCenter: parent
                anchors.topMargin: 5
@@ -67,6 +68,11 @@ Rectangle {
     MouseArea{
         anchors.fill: parent
         cursorShape: Qt.PointingHandCursor
-        onClicked: main_layout.state = "details"
+        onClicked: {
+            main_layout.state = "details"
+            MovieDetailsModel.set_movie(root.movie_id)
+
+
+        }
     }
 }

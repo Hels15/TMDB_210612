@@ -3,9 +3,9 @@ from dotenv import load_dotenv
 from PySide6.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, QRunnable, QThreadPool, \
     Signal,QUrl,Property
 
-import os
+import os,time
 from os.path import expanduser
-from utilitites.downloader import download_image
+from utilities.downloader import download_image
 
 USER_HOME = expanduser("~")
 CACHE_FOLDER = os.path.join(USER_HOME, "TMDB_CACHE")
@@ -43,7 +43,7 @@ class MovieList(QAbstractListModel):
 
 
     def _insert_movie(self, movie_data):
-        print(movie_data)
+
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._items.append(self._serializer(movie_data))
         self.endInsertRows()
@@ -54,7 +54,8 @@ class MovieList(QAbstractListModel):
             "poster": QUrl().fromLocalFile(movie_data["local_poster"]),
             "title": movie_data["title"],
             "date": movie_data["release_date"],
-            "rating": int(movie_data["vote_average"] * 10)
+            "rating": int(movie_data["vote_average"] * 10),
+            "overview": movie_data["overview"]
         }
 
     def rowCount(self, parent=QModelIndex):
@@ -170,6 +171,8 @@ class MovieListWorker(QRunnable):
             if not self._check_movie(movie_data):
                 continue
 
+
+
             local_poster_path = download_image(movie_data["poster_path"], CACHE_FOLDER)
             if not local_poster_path:
                 continue
@@ -177,6 +180,9 @@ class MovieListWorker(QRunnable):
             movie_data["local_poster"] = local_poster_path
 
             self.signals.movie_data_downloaded.emit(movie_data)
+
+
+
 
         print("Download stopped.")
         self.signals.download_process_finished.emit()

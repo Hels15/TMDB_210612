@@ -7,6 +7,9 @@ from PySide6.QtGui import QGuiApplication
 from PySide6.QtQml import QQmlApplicationEngine
 from Modules.resource_loader import Resources
 from Modules.movie_list import MovieList
+from Modules.movieDetails import MovieDetails
+
+
 
 class TMDB:
     def __init__(self):
@@ -18,8 +21,14 @@ class TMDB:
         self.resource_loader = Resources()
         self.context.setContextProperty("Resources", self.resource_loader)
 
+
+
         self.movie_list = MovieList()
-        self.context.setContextProperty("MovieList",self.movie_list)
+        self.context.setContextProperty("MovieListModel",self.movie_list)
+
+        self.movie_details = MovieDetails()
+        self.context.setContextProperty("MovieDetailsModel", self.movie_details)
+
 
         self.engine.load(os.fspath(Path(__file__).resolve().parent / "main.qml"))
         if not self.engine.rootObjects():
