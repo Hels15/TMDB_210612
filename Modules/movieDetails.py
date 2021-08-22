@@ -127,6 +127,7 @@ class MovieDetails(QObject):
     tagline = Property(str, _get_tagline, notify=movie_loaded)
     release_date = Property(str, _get_date, notify=movie_loaded)
     poster = Property(QUrl, _get_poster, notify=movie_loaded)
+    print(poster)
     backdrop = Property(QUrl, _get_backdrop, notify=movie_loaded)
     language = Property(str, _get_language, notify=movie_loaded)
     genres = Property(str, _get_genres, notify=movie_loaded)

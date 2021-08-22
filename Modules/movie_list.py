@@ -1,9 +1,8 @@
 import tmdbsimple as tmdb
 from dotenv import load_dotenv
-from PySide6.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, QRunnable, QThreadPool, \
-    Signal,QUrl,Property
-
-import os,time
+from PySide6.QtCore import QAbstractListModel, Qt, QModelIndex, QObject, QRunnable, \
+    QThreadPool, Signal, QUrl
+import os
 from os.path import expanduser
 from utilities.downloader import download_image
 
@@ -40,14 +39,11 @@ class MovieList(QAbstractListModel):
         self.movie_list_worker.signals.movie_data_downloaded.connect(self._insert_movie)
         self.pool.start(self.movie_list_worker)
 
-
-
     def _insert_movie(self, movie_data):
-
         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
         self._items.append(self._serializer(movie_data))
         self.endInsertRows()
-        self.movie_list_changed.emit()
+
     def _serializer(self, movie_data):
         return {
             "id": movie_data["id"],
@@ -72,71 +68,15 @@ class MovieList(QAbstractListModel):
         }
 
 
-# detailed Abstract list model
-class BaseListModel(QAbstractListModel):
-    DataRole = Qt.UserRole
-    DisplayRole = Qt.UserRole + 1
-
-    def __init__(self):
-        super(BaseListModel, self).__init__()
-        self.items = []
-
-    def reset(self):
-        self.beginResetModel()
-        self.items.clear()
-        self.endResetModel()
-
-    def insert_item(self, data):
-        self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
-        self.items.append(data)
-        self.endInsertRows()
-
-    def insert_with_index(self, index, data):
-        self.beginInsertRows(QModelIndex(), index, index)
-        self.items.insert(index, data)
-        self.endInsertRows()
-
-    def edit_item(self, row, data):
-        index = self.index(row, 0)
-        self.items[row] = data
-        self.dataChanged.emit(index, index, self.roleNames())
-
-    def delete_item(self, row):
-        self.beginRemoveRows(QModelIndex(), row, row)
-        del self.items[row]
-        self.endRemoveRows()
-
-    def rowCount(self, parent=QModelIndex()):
-        return len(self.items)
-
-    def roleNames(self):
-        return {
-            BaseListModel.DataRole: b'item',
-            BaseListModel.DisplayRole: b'text',
-        }
-
-    def data(self, index, role):
-        if not index.isValid():
-            return None
-
-        row = index.row()
-        if row < 0 or row >= len(self.items):
-            return None
-        else:
-            if role == BaseListModel.DataRole:
-                return self.items[row]
-
-            elif role == BaseListModel.DisplayRole:
-                return self.items[row]["name"]
-
-
 class WorkerSignals(QObject):
     download_process_started = Signal()
     download_process_stopped = Signal()
     download_process_finished = Signal()
     movie_data_downloaded = Signal(dict)
+
     def __init__(self):
-        super().__init__()
+        super(WorkerSignals, self).__init__()
+
 
 class MovieListWorker(QRunnable):
     def __init__(self):
@@ -171,18 +111,13 @@ class MovieListWorker(QRunnable):
             if not self._check_movie(movie_data):
                 continue
 
-
-
             local_poster_path = download_image(movie_data["poster_path"], CACHE_FOLDER)
             if not local_poster_path:
                 continue
 
             movie_data["local_poster"] = local_poster_path
-
+            #print(movie_data)
             self.signals.movie_data_downloaded.emit(movie_data)
-
-
-
 
         print("Download stopped.")
         self.signals.download_process_finished.emit()
@@ -196,3 +131,68 @@ class MovieListWorker(QRunnable):
 
 if __name__ == '__main__':
     MovieList()
+
+
+
+
+
+
+
+# detailed Abstract list model
+# class BaseListModel(QAbstractListModel):
+#     DataRole = Qt.UserRole
+#     DisplayRole = Qt.UserRole + 1
+#
+#     def __init__(self):
+#         super(BaseListModel, self).__init__()
+#         self.items = []
+#
+#     def reset(self):
+#         self.beginResetModel()
+#         self.items.clear()
+#         self.endResetModel()
+#
+#     def insert_item(self, data):
+#         self.beginInsertRows(QModelIndex(), self.rowCount(), self.rowCount())
+#         self.items.append(data)
+#         self.endInsertRows()
+#
+#     def insert_with_index(self, index, data):
+#         self.beginInsertRows(QModelIndex(), index, index)
+#         self.items.insert(index, data)
+#         self.endInsertRows()
+#
+#     def edit_item(self, row, data):
+#         index = self.index(row, 0)
+#         self.items[row] = data
+#         self.dataChanged.emit(index, index, self.roleNames())
+#
+#     def delete_item(self, row):
+#         self.beginRemoveRows(QModelIndex(), row, row)
+#         del self.items[row]
+#         self.endRemoveRows()
+#
+#     def rowCount(self, parent=QModelIndex()):
+#         return len(self.items)
+#
+#     def roleNames(self):
+#         return {
+#             BaseListModel.DataRole: b'item',
+#             BaseListModel.DisplayRole: b'text',
+#         }
+#
+#     def data(self, index, role):
+#         if not index.isValid():
+#             return None
+#
+#         row = index.row()
+#         if row < 0 or row >= len(self.items):
+#             return None
+#         else:
+#             if role == BaseListModel.DataRole:
+#                 return self.items[row]
+#
+#             elif role == BaseListModel.DisplayRole:
+#                 return self.items[row]["name"]
+#
+#

@@ -1,5 +1,6 @@
 import QtQuick 2.0
 import QtQuick.Layouts
+
 Item {
     GridView{
         id: movie_list_view
