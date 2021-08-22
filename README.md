@@ -1,3 +1,3 @@
 # Example Site
 
-This is a simple readme file.
+Example project for a QT application!
